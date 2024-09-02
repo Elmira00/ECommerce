@@ -1,4 +1,8 @@
-﻿@model ProductListViewModel
+﻿@model SortProductsListViewModel
+@{
+    int nextSorting = Model.Sorting == 0 ? 1 : 0;
+    string sortingText = nextSorting == 0 ? "A to Z" : "Z to A";
+}
 @if (Model.Products == null || Model.Products.Count == 0)
 {
     <span class="alert alert-danger">No Product exist</span>
@@ -12,7 +16,7 @@ else
                 <th>Product Name</th>
                 <th>Unit Price</th>
                 <th>UnitsInStock</th>
-                <th> <a style="color:dodgerblue;background-color:papayawhip;border-radius:9px;display:inline-block;padding:4px 10px;margin:5px;box-shadow:2px 2px 1px dodgerblue;border:1px solid dodgerblue;text-decoration:none" href="@Url.Action("Sort", "Product", new { Page =Model.CurrentPage,Category=Model.CurrentCategory,Sorting=0,Count=Model.PageCount,Size=Model.PageSize})">A to Z</a> </th>
+                <th> <a style="color:dodgerblue;background-color:papayawhip;border-radius:9px;display:inline-block;padding:4px 10px;margin:5px;box-shadow:2px 2px 1px dodgerblue;border:1px solid dodgerblue;text-decoration:none" href="@Url.Action("Sort", "Product", new { Page =Model.Page,Category=Model.Category,Sorting=nextSorting,Size=Model.Size,Count=Model.Count})">@sortingText</a> </th>
                 <th></th>
             </tr>
         </thead>
@@ -31,7 +35,7 @@ else
                         @item.UnitsInStock
                     </td>
                     <td>
-                        <a href="/Cart/AddToCart?productId=@item.ProductId&page=@Model.CurrentPage&category=@Model.CurrentCategory"
+                        <a href="/Cart/AddToCart?productId=@item.ProductId&page=@Model.Page&category=@Model.Category"
                    class="btn btn-xs btn-success">Add To Cart</a>
                     </td>
                 </tr>
@@ -39,10 +43,10 @@ else
         </tbody>
     </table>
 
-    <product-list-pager current-category="@Model.CurrentCategory"
-                    current-page="@Model.CurrentPage"
-                    page-count="@Model.PageCount"
-                    page-size="@Model.PageSize">
+    <product-list-pager current-category="@Model.Category"
+                    current-page="@Model.Page"
+                    page-count="@Model.Count"
+                    page-size="@Model.Size">
     </product-list-pager>
 
 }
