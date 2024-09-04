@@ -24,8 +24,16 @@ namespace Ecommerce.WebUI.TagHelpers
             if (PageCount > 1)
             {
                 sb.Append("<ul class='pagination'>");
+                if (CurrentPage > 1)
+                {
+                    sb.AppendFormat("<li>");
+                    sb.AppendFormat("<a class='page-link' href='/product/index?page={0}&category={1}'>Prev</a>",
+                            CurrentPage - 1, CurrentCategory);
+                    sb.Append("<li/>");
+                }
                 for (int i = 1; i <= PageCount; i++)
                 {
+
                     sb.AppendFormat("<li class='{0}'>", (i == CurrentPage) ? "page-item active" : "page-item");
                     if (Admin)
                     {
@@ -37,6 +45,13 @@ namespace Ecommerce.WebUI.TagHelpers
                         sb.AppendFormat("<a class='page-link' href='/product/index?page={0}&category={1}'>{2}</a>",
                         i, CurrentCategory, i);
                     }
+                    sb.Append("<li/>");
+                }
+                if (CurrentPage < PageCount)
+                {
+                    sb.AppendFormat("<li>");
+                    sb.AppendFormat("<a class='page-link' href='/product/index?page={0}&category={1}'>Next</a>",
+                            CurrentPage + 1, CurrentCategory);
                     sb.Append("<li/>");
                 }
                 sb.Append("<ul/>");
